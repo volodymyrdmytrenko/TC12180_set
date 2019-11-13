@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
+tt = sys.argv
 test_name = sys.argv[0].split('/')[-1].split('.')[0]
 tc, set_em, set_mn, set_hr, role, des, res = test_name.split('_')
 url = "http://stage.mytandem.eu"
@@ -18,8 +18,8 @@ tst_type = 0
 tst_counter = 0
 is_first_login = True
 
-users = {'em': 'Martha.Robinson@email.com',             # emploee
-         'em1': 'Jenny.Thompson@email.com',             # emploee1
+users = {'em': 'Martha.Robinson@email.com',             # employee
+         'em1': 'Jenny.Thompson@email.com',             # employee1
          'oi_usr': 'Gerry.Harris@email.com',            # OI user
          'mn': 'Dermot.Jackson@email.com',              # manager
          'sub': 'David.Wilson@email.com',               # sub
@@ -50,6 +50,8 @@ class MyTestCase(unittest.TestCase):
         self.driver.find_element_by_id('e2e-username').send_keys(usr)
         self.driver.find_element_by_id('e2e-password').send_keys("pass")
         self.driver.find_element_by_id('e2e-login-button').click()
+        time.sleep(1)
+        assert self.driver.find_element_by_id('e2e-user-profile')
         print("    Login as " + usr + ": - Ok")
 
     def tst_logout(self):
@@ -61,21 +63,37 @@ class MyTestCase(unittest.TestCase):
     def tst_settings(self, em, mg, hr):
         global users
         changed = False
-        wait10 = WebDriverWait(self.driver, 10)
+        if em == "on":
+            em = "true"
+        else:
+            em = "false"
+
+        if mg == "on":
+            mg = "true"
+        else:
+            mg = "false"
+
+        if hr == "on":
+            hr = "true"
+        else:
+            hr = "false"
+
+        wait10 = WebDriverWait(self.driver, 15)
         self.tst_login(users["admin"])
         #  self.tst_login("Barry.Deegan@email.com")
         wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-system-administration')))
         self.driver.find_element_by_id("e2e-system-administration").click()
         wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-manage-goals')))
         self.driver.find_element_by_id("e2e-manage-goals").click()
-        wait10.until(EC.element_to_be_clickable((By.ID, 'GoalsSettings_EnableAllowEmployeeToAssignToEveryone')))
-        if self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").get_attribute("data-value") != em.lower():
+        # wait10.until(EC.element_to_be_clickable((By.ID, 'GoalsSettings_EnableAllowEmployeeToAssignToEveryone')))
+        time.sleep(2)
+        if self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").get_attribute("data-value") != em:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").click()
             changed = True
-        if self.driver.find_element_by_id("GoalsSettings_EnableAllowManagerToAssignToEveryone").get_attribute("data-value") != mg.lower():
+        if self.driver.find_element_by_id("GoalsSettings_EnableAllowManagerToAssignToEveryone").get_attribute("data-value") != mg:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowManagerToAssignToEveryone").click()
             changed = True
-        if self.driver.find_element_by_id("GoalsSettings_EnableAllowHRToAssignToEveryone").get_attribute("data-value") != hr.lower():
+        if self.driver.find_element_by_id("GoalsSettings_EnableAllowHRToAssignToEveryone").get_attribute("data-value") != hr:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowHRToAssignToEveryone").click()
             changed = True
         if changed:
@@ -126,14 +144,15 @@ class MyTestCase(unittest.TestCase):
             self.tst_login(users["em1"])
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
-            self.tst_logout()
+            # self.tst_logout()
 
             # Login as a init user and notification delete
-            self.tst_login(users[role])
-            self.driver.find_element_by_id("e2e-desktop-notifications").click()
-            self.driver.find_element_by_id('e2e-view-all-notifications').click()
-            self.driver.find_element_by_class_name("delete-notification").click()
-            print("    Notificaten about Goal deleting deleted: - Ok")
+            # self.tst_login(users[role])
+            # self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            # self.driver.find_element_by_id('e2e-view-all-notifications').click()
+            # self.driver.find_element_by_class_name("delete-notification").click()
+            # print("    Notification about Goal deleting deleted: - Ok")
+
         else:  # if cannot
             # if impossible to find
             self.driver.find_element_by_id("e2e-assign-goal").click()
@@ -185,14 +204,14 @@ class MyTestCase(unittest.TestCase):
             self.tst_login(users["oi_usr"])
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
-            self.tst_logout()
+            # self.tst_logout()
 
             # Login as a init user and notification delete
-            self.tst_login(users[role])
-            self.driver.find_element_by_id("e2e-desktop-notifications").click()
-            self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
-            self.driver.find_element_by_class_name("delete-notification").click()
-            print("    Notification about Goal deleting deleted: - Ok")
+            # self.tst_login(users[role])
+            # self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            # self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
+            # self.driver.find_element_by_class_name("delete-notification").click()
+            # print("    Notification about Goal deleting deleted: - Ok")
         else:  # if cannot
             # if impossible to find
             self.driver.find_element_by_id("e2e-assign-goal").click()
@@ -244,14 +263,14 @@ class MyTestCase(unittest.TestCase):
             self.tst_login(users["em1"])
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
-            self.tst_logout()
+            # self.tst_logout()
 
             # Login as a init user and notification delete
-            self.tst_login(users[role])
-            self.driver.find_element_by_id("e2e-desktop-notifications").click()
-            self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
-            self.driver.find_element_by_class_name("delete-notification").click()
-            print("    Notification about Goal deleting deleted: - Ok")
+            # self.tst_login(users[role])
+            # self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            # self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
+            # self.driver.find_element_by_class_name("delete-notification").click()
+            # print("    Notification about Goal deleting deleted: - Ok")
         else:  # if cannot
             # if impossible to find
             self.driver.find_element_by_id("e2e-assign-goal").click()
@@ -311,14 +330,14 @@ class MyTestCase(unittest.TestCase):
             self.tst_login(u)
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
-            self.tst_logout()
+            # self.tst_logout()
 
             # Login as a init user and notification delete
-            self.tst_login(users[role])
-            self.driver.find_element_by_id("e2e-desktop-notifications").click()
-            self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
-            self.driver.find_element_by_class_name("delete-notification").click()
-            print("    Notification about Goal deleting deleted: - Ok")
+            # self.tst_login(users[role])
+            # self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            # self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
+            # self.driver.find_element_by_class_name("delete-notification").click()
+            # print("    Notification about Goal deleting deleted: - Ok")
         else:  # if cannot
             # if impossible to find
             self.driver.find_element_by_id("e2e-assign-goal").click()
@@ -371,14 +390,14 @@ class MyTestCase(unittest.TestCase):
             self.tst_login(users["sub"])
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
-            self.tst_logout()
+            # self.tst_logout()
 
             # Login as a init user and notification delete
-            self.tst_login(users["mn"])
-            self.driver.find_element_by_id("e2e-desktop-notifications").click()
-            self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
-            self.driver.find_element_by_class_name("delete-notification").click()
-            print("    Notificaten about Goal deleting deleted: - Ok")
+            # self.tst_login(users["mn"])
+            # self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            # self.driver.find_element_by_xpath("//*[@id='e2e-view-all-notifications']/a").click()
+            # self.driver.find_element_by_class_name("delete-notification").click()
+            # print("    Notificaten about Goal deleting deleted: - Ok")
         else:  # if cannot
             # if impossible to find
             self.driver.find_element_by_id("e2e-assign-goal").click()
@@ -389,44 +408,35 @@ class MyTestCase(unittest.TestCase):
                 print("!!!======== It is possible to find but should not! ========================================")
         self.tst_logout()
 
+    # def tst_notifications(self, ttitle):
+    #     self.driver.find_element_by_id("e2e-desktop-notifications").click()
+    #     # print("    Notifications click: - Ok")
+    #     if self.driver.find_elements_by_id('e2e-view-all-notifications') == 0:
+    #         print("!!!======== There are no notifications about Goal Assign! ======================================")
+    #     else:
+    #         self.driver.find_element_by_id('e2e-view-all-notifications').click()
+    #         nt_list = self.driver.find_elements_by_xpath("//*[text()='" + ttitle + "']")
+    #         if len(nt_list) > 0:
+    #             # print("    Notifications are present: - Ok")
+    #             for i in nt_list:
+    #                 self.driver.find_element_by_class_name("delete-notification").click()
+    #             print("    Notifications found and has deleted: - Ok")
+    #         else:
+    #             print("!!!======== There are no notifications about Goal Assign! ==================================")
+
     def tst_notifications(self, ttitle):
         self.driver.find_element_by_id("e2e-desktop-notifications").click()
-        # print("    Notifications click: - Ok")
-        if self.driver.find_elements_by_id('e2e-view-all-notifications') == 0:
-            print("!!!======== There are no notifications about Goal Assign! ========================================")
-        else:
-            self.driver.find_element_by_id('e2e-view-all-notifications').click()
-            nt_list = self.driver.find_elements_by_xpath("//*[text()='" + ttitle + "']")
-            if len(nt_list) > 0:
-                # print("    Notifications are present: - Ok")
-                for i in nt_list:
-                    self.driver.find_element_by_class_name("delete-notification").click()
-                print("    Notifications found and has deleted: - Ok")
-            else:
-                print("!!!======== There are no notifications about Goal Assign! =====================================")
+        time.sleep(1)
+        self.driver.find_element_by_id('e2e-view-all-notifications').click()
+        assert self.driver.find_element_by_xpath("//*[text()='" + ttitle + "']")
+        print("    Notifications: - Ok")
 
     def tst_my_goals(self, ttitle):
         wait10 = WebDriverWait(self.driver, 10)
         # Check in My Goalas
         self.driver.find_element_by_id("e2e-my-goals").click()
-        if len(self.driver.find_elements_by_xpath("//h4[text()='" + ttitle + "']")) == 0:
-            print("!!!======== There are no Goal in My Goals found! ========================================")
-        else:
-            while len(self.driver.find_elements_by_xpath("//h4[text()='" + ttitle + "']")) > 0:
-                # self.driver.find_element_by_xpath("//h4[text()='" + ttitle + "']").click()
-                str_xp = "//h4[text()='" + ttitle + "']"
-                wait10.until(EC.element_to_be_clickable((By.XPATH, str_xp)))
-                self.driver.find_element_by_xpath("//h4[text()='" + ttitle + "']").click()
-                # self.driver.find_element_by_id("e2e-delete-button").click()
-                wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-delete-button')))
-                self.driver.find_element_by_id("e2e-delete-button").click()
-                wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-yes-button')))
-                self.driver.find_element_by_id("e2e-yes-button").click()
-                # time.sleep(1)
-                wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-primary-button')))
-                self.driver.find_element_by_id("e2e-primary-button").click()
-
-            print("    Goal in MyGoals found and has deleted : - Ok")
+        assert self.driver.find_element_by_xpath("//h4[text()='" + ttitle + "']")
+        print("    Goal in MyGoals: - Ok")
 
     def is_ok(self, can):
         global des
@@ -446,7 +456,7 @@ class MyTestCase(unittest.TestCase):
     def is_no_menu(self):
         global role, users
         tst_str = self.tst_log()
-        self.tst_login(role)
+        self.tst_login(users[role])
         # If No Assign Goal available in the menu
         if len(self.driver.find_elements_by_id("e2e-assign-goal")) == 0:
             print("    No Assign Goal menu: - Ok")
@@ -461,18 +471,19 @@ class MyTestCase(unittest.TestCase):
             self.is_ok(True)
         elif res == "cannot":
             self.is_ok(False)
-        elif res == "no_menu":
+        elif res == "no":
             self.is_no_menu()
         else:
             self.tst_log()
-            print("    Skiped...")
+            print("    Skipped...")
 
     def test_12180(self):
         global ln, url
         driver = self.driver
-        driver.implicitly_wait(40)
+        driver.implicitly_wait(5)
         self.driver.get(url)
         self.do_testing()
+        driver.close()
 
 
 if __name__ == '__main__':
