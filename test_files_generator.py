@@ -63,5 +63,5 @@ for i in range(1, len(main_matrix)):
         nstr = ("00" + str(n))[-3:]
         f = nstr + f + main_matrix[0][j] + "_" + main_matrix[i][j] + ".py"
         print(f)
-        shutil.copyfile(s, '../' + f)
+        shutil.copyfile(s,f)
 
