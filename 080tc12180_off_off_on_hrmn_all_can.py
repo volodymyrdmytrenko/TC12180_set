@@ -426,8 +426,20 @@ class MyTestCase(unittest.TestCase):
     #             print("!!!======== There are no notifications about Goal Assign! ==================================")
 
     def tst_notifications(self, ttitle):
-        self.driver.find_element_by_id("e2e-desktop-notifications").click()
-        time.sleep(1)
+        no_notification = True
+        dr = self.driver
+        dr.implicitly_wait(1)
+        for i in range(1, 4):
+            self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            if len(self.driver.find_elements_by_id('e2e-view-all-notifications')) > 0:
+                no_notification = False
+                break
+            self.driver.find_element_by_id("e2e-desktop-notifications").click()
+            time.sleep(5)
+        if no_notification:
+            print("!!! === No Notifications! ====")
+            dr.implicitly_wait(default_timeout)
+            assert False
         self.driver.find_element_by_id('e2e-view-all-notifications').click()
         assert self.driver.find_element_by_xpath("//*[text()='" + ttitle + "']")
         print("    Notifications: - Ok")
