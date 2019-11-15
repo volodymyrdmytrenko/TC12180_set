@@ -92,8 +92,8 @@ class MyTestCase(unittest.TestCase):
         dr.implicitly_wait(20)
         self.tst_login(users["admin"])
         self.driver.find_element_by_id("e2e-system-administration").click()
+        self.wait_id('e2e-manage-goals')
         self.driver.find_element_by_id("e2e-manage-goals").click()
-        # time.sleep(2)
 
         dr.implicitly_wait(1)
         for i in range(1, 4):
@@ -258,6 +258,7 @@ class MyTestCase(unittest.TestCase):
 
             # Send Button click
             self.driver.find_element_by_id("e2e-send-button").click()
+            self.wait_id('e2e-primary-button')
             self.driver.find_element_by_id("e2e-primary-button").click()
             print("    Goal send: - Ok")
 
@@ -435,6 +436,15 @@ class MyTestCase(unittest.TestCase):
         self.driver.find_element_by_id("e2e-my-goals").click()
         assert self.driver.find_element_by_xpath("//h4[text()='" + ttitle + "']")
         print("    Goal in MyGoals: - Ok")
+
+    def wait_id(self, id):
+        dr = self.driver
+        dr.implicitly_wait(1)
+        for i in range(1, 4):
+            if len(self.driver.find_elements_by_id(id)) > 0:
+                break
+            time.sleep(3)
+        dr.implicitly_wait(default_timeout)
 
     def is_ok(self, can):
         global des
