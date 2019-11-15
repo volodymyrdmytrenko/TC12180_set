@@ -10,6 +10,15 @@ from selenium.webdriver.support.wait import WebDriverWait
 tt = sys.argv
 test_name = sys.argv[0].split('/')[-1].split('.')[0]
 tc, set_em, set_mn, set_hr, role, des, res = test_name.split('_')
+
+# tt = '112tc12180_off_on_on_mn_sub_can.py'
+# tc, set_em, set_mn, set_hr, role, des, res = tt.split('_')
+# test_name = tt
+# res = res.split('.')[0]
+print(tc, set_em, set_mn, set_hr, role, des, res)
+
+
+
 url = "http://stage.mytandem.eu"
 db = "e2e"
 oi = "Finance"
@@ -26,7 +35,7 @@ users = {'em': 'Martha.Robinson@email.com',             # employee
          'sub': 'David.Wilson@email.com',               # sub
          'hr': 'alison.johnson@email.com',              # HR
          'hrmn': 'Jamie.Duggan@email.com',              # HR+manager
-         'hr_mn_direct': 'Tina.Delaney@email.com',      # HR+manager direct
+         'dir': 'Tina.Delaney@email.com',               # HR+manager direct
          'admin': 'Barry.Deegan@email.com'}             # admin
 
 
@@ -116,12 +125,9 @@ class MyTestCase(unittest.TestCase):
             print("    Recepient found: - Ok")
 
             # Enter Goal Type
-            self.driver.find_element_by_class_name("select2-selection").click()
-            self.driver.find_elements_by_class_name("select2-results__option")[0].click()
-            # print("    Goal type set: - Ok")
-            # Due Date set
+            self.driver.find_element_by_id('e2e-set-goal-type').click()
+            self.driver.find_elements_by_class_name("tandem-multiselect__menu-list")[0].click()
             self.driver.find_element_by_id("newPriorityDueDate").send_keys("31/12/2030")
-            # print("    Goal date set: - Ok")
 
             # Enter Goal Title
             # click on field before element find
@@ -176,12 +182,9 @@ class MyTestCase(unittest.TestCase):
             print("    OI found: - Ok")
 
             # Enter Goal Type
-            self.driver.find_element_by_class_name("select2-selection").click()
-            self.driver.find_elements_by_class_name("select2-results__option")[0].click()
-            # print("    Goal type set: - Ok")
-            # Due Date set
+            self.driver.find_element_by_id('e2e-set-goal-type').click()
+            self.driver.find_elements_by_class_name("tandem-multiselect__menu-list")[0].click()
             self.driver.find_element_by_id("newPriorityDueDate").send_keys("31/12/2030")
-            # print("    Goal date set: - Ok")
 
             # Enter Goal Title
             # click on field before element find
@@ -235,12 +238,9 @@ class MyTestCase(unittest.TestCase):
             print("    All Company found: - Ok")
 
             # Enter Goal Type
-            self.driver.find_element_by_class_name("select2-selection").click()
-            self.driver.find_elements_by_class_name("select2-results__option")[0].click()
-            # print("    Goal type set: - Ok")
-            # Due Date set
+            self.driver.find_element_by_id('e2e-set-goal-type').click()
+            self.driver.find_elements_by_class_name("tandem-multiselect__menu-list")[0].click()
             self.driver.find_element_by_id("newPriorityDueDate").send_keys("31/12/2030")
-            # print("    Goal date set: - Ok")
 
             # Enter Goal Title
             # click on field before element find
@@ -298,12 +298,9 @@ class MyTestCase(unittest.TestCase):
             # print("    My direct reports: - Ok")
 
             # Enter Goal Type
-            self.driver.find_element_by_class_name("select2-selection").click()
-            self.driver.find_elements_by_class_name("select2-results__option")[0].click()
-            # print("    Goal type set: - Ok")
-            # Due Date set
+            self.driver.find_element_by_id('e2e-set-goal-type').click()
+            self.driver.find_elements_by_class_name("tandem-multiselect__menu-list")[0].click()
             self.driver.find_element_by_id("newPriorityDueDate").send_keys("31/12/2030")
-            # print("    Goal date set: - Ok")
 
             # Enter Goal Title
             # click on field before element find
@@ -362,12 +359,9 @@ class MyTestCase(unittest.TestCase):
             print("    Recepient found: - Ok")
 
             # Enter Goal Type
-            self.driver.find_element_by_class_name("select2-selection").click()
-            self.driver.find_elements_by_class_name("select2-results__option")[0].click()
-            # print("    Goal type set: - Ok")
-            # Due Date set
+            self.driver.find_element_by_id('e2e-set-goal-type').click()
+            self.driver.find_elements_by_class_name("tandem-multiselect__menu-list")[0].click()
             self.driver.find_element_by_id("newPriorityDueDate").send_keys("31/12/2030")
-            # print("    Goal date set: - Ok")
 
             # Enter Goal Title
             # click on field before element find
@@ -407,21 +401,6 @@ class MyTestCase(unittest.TestCase):
                 print("!!!======== It is possible to find but should not! ========================================")
         self.tst_logout()
 
-    # def tst_notifications(self, ttitle):
-    #     self.driver.find_element_by_id("e2e-desktop-notifications").click()
-    #     # print("    Notifications click: - Ok")
-    #     if self.driver.find_elements_by_id('e2e-view-all-notifications') == 0:
-    #         print("!!!======== There are no notifications about Goal Assign! ======================================")
-    #     else:
-    #         self.driver.find_element_by_id('e2e-view-all-notifications').click()
-    #         nt_list = self.driver.find_elements_by_xpath("//*[text()='" + ttitle + "']")
-    #         if len(nt_list) > 0:
-    #             # print("    Notifications are present: - Ok")
-    #             for i in nt_list:
-    #                 self.driver.find_element_by_class_name("delete-notification").click()
-    #             print("    Notifications found and has deleted: - Ok")
-    #         else:
-    #             print("!!!======== There are no notifications about Goal Assign! ==================================")
 
     def tst_notifications(self, ttitle):
         no_notification = True
