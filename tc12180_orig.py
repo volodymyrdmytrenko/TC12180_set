@@ -93,7 +93,15 @@ class MyTestCase(unittest.TestCase):
         self.tst_login(users["admin"])
         self.driver.find_element_by_id("e2e-system-administration").click()
         self.driver.find_element_by_id("e2e-manage-goals").click()
-        time.sleep(2)
+        # time.sleep(2)
+
+        dr.implicitly_wait(1)
+        for i in range(1, 4):
+            if len(self.driver.find_elements_by_id('GoalsSettings_EnableAllowEmployeeToAssignToEveryone')) > 0:
+                break
+            self.driver.find_element_by_id("e2e-manage-goals").click()
+            time.sleep(3)
+
         if self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").get_attribute("data-value") != em:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").click()
             changed = True
@@ -415,8 +423,8 @@ class MyTestCase(unittest.TestCase):
             time.sleep(5)
         if no_notification:
             print("!!! === No Notifications! ====")
-            dr.implicitly_wait(default_timeout)
             assert False
+        dr.implicitly_wait(default_timeout)
         self.driver.find_element_by_id('e2e-view-all-notifications').click()
         assert self.driver.find_element_by_xpath("//*[text()='" + ttitle + "']")
         print("    Notifications: - Ok")
