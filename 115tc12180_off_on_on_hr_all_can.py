@@ -79,14 +79,11 @@ class MyTestCase(unittest.TestCase):
         else:
             hr = "false"
 
-        # wait10 = WebDriverWait(self.driver, 15)
+        dr = self.driver
+        dr.implicitly_wait(20)
         self.tst_login(users["admin"])
-        #  self.tst_login("Barry.Deegan@email.com")
-        # wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-system-administration')))
         self.driver.find_element_by_id("e2e-system-administration").click()
-        # wait10.until(EC.element_to_be_clickable((By.ID, 'e2e-manage-goals')))
         self.driver.find_element_by_id("e2e-manage-goals").click()
-        # wait10.until(EC.element_to_be_clickable((By.ID, 'GoalsSettings_EnableAllowEmployeeToAssignToEveryone')))
         time.sleep(2)
         if self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").get_attribute("data-value") != em:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").click()
@@ -101,6 +98,7 @@ class MyTestCase(unittest.TestCase):
             self.driver.find_element_by_xpath('//*[@id="main-content"]/div[2]/div[2]/div[12]/button').click()
             time.sleep(7)
         print("    Test settings: - Ok")
+        dr.implicitly_wait(default_timeout)
         self.tst_logout()
 
     def if_to_any_user(self, can):

@@ -1,4 +1,3 @@
-echo off
 python 001tc12180_on_on_on_em_any_can.py
 python 002tc12180_on_on_on_em_oi_can.py
 python 003tc12180_on_on_on_em_all_can.py
