@@ -25,7 +25,7 @@ users = {'em': 'Martha.Robinson@email.com',             # employee
          'mn': 'Dermot.Jackson@email.com',              # manager
          'sub': 'David.Wilson@email.com',               # sub
          'hr': 'alison.johnson@email.com',              # HR
-         'hr_mn': 'Jamie.Duggan@email.com',             # HR+manager
+         'hrmn': 'Jamie.Duggan@email.com',              # HR+manager
          'hr_mn_direct': 'Tina.Delaney@email.com',      # HR+manager direct
          'admin': 'Barry.Deegan@email.com'}             # admin
 
