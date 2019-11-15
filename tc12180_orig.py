@@ -330,7 +330,7 @@ class MyTestCase(unittest.TestCase):
             if role == "mn":
                 u = users["sub"]
             else:
-                u = users["hr_mn_direct"]
+                u = users["hrmn"]
             self.tst_login(u)
             self.tst_notifications(tst_str)
             self.tst_my_goals(tst_str)
