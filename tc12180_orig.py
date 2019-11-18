@@ -15,9 +15,8 @@ tc, set_em, set_mn, set_hr, role, des, res = test_name.split('_')
 # tc, set_em, set_mn, set_hr, role, des, res = tt.split('_')
 # test_name = tt
 # res = res.split('.')[0]
-print(tc, set_em, set_mn, set_hr, role, des, res)
 
-
+# print(tc, set_em, set_mn, set_hr, role, des, res)
 
 url = "http://stage.mytandem.eu"
 db = "e2e"
@@ -96,11 +95,11 @@ class MyTestCase(unittest.TestCase):
         self.driver.find_element_by_id("e2e-manage-goals").click()
 
         dr.implicitly_wait(1)
-        for i in range(1, 4):
+        for i in range(1, 10):
             if len(self.driver.find_elements_by_id('GoalsSettings_EnableAllowEmployeeToAssignToEveryone')) > 0:
                 break
             self.driver.find_element_by_id("e2e-manage-goals").click()
-            time.sleep(3)
+            time.sleep(1)
 
         if self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").get_attribute("data-value") != em:
             self.driver.find_element_by_id("GoalsSettings_EnableAllowEmployeeToAssignToEveryone").click()
