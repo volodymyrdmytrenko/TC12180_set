@@ -1,3 +1,9 @@
+##########################################################################
+#  TANDEM PROJECT
+#  e2e test by test case 12180
+#  Volodymyr.Dmytrenko@arvosoftware.com
+##########################################################################
+
 import sys
 import time
 import unittest
